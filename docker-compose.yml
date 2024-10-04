@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: 'church_services_user'
+      POSTGRES_PASSWORD: 'church_services_password'
+      POSTGRES_DB: 'church_services'
+    ports:
+      - "5432:5432"
+    volumes:
+      - church-services-db-data:/var/lib/postgresql/data
+
+  backend:
+    build: ./church-services-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: 'jdbc:postgresql://db:5432/church_services'
+      DATABASE_USERNAME: 'church_services_user'
+      DATABASE_PASSWORD: 'church_services_password'
+
+  frontend:
+    build: ./church-services-app
+    restart: always
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+volumes:
+  church-services-db-data:

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: 'church_services_user'
+      POSTGRES_PASSWORD: 'church_services_password'
+      POSTGRES_DB: 'church_services'
+    ports:
+      - "5432:5432"
+    volumes:
+      - church-services-db-data:/var/lib/postgresql/data
+
+volumes:
+  church-services-db-data:
