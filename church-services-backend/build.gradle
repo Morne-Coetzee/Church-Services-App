@@ -5,32 +5,40 @@ buildscript {
         springBootVersion = '2.2.13.RELEASE'
     }
     repositories {
-        maven { url "https://repo.grails.org/grails/core" }
+        mavenLocal()
         mavenCentral()
-        jcenter()
+        maven { url "https://repo.maven.apache.org/maven2" }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://repo.grails.org/grails/plugins" }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:7.0.5"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.0"
-        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.2.4"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+        classpath "org.flywaydb:flyway-gradle-plugin:7.15.0" // Updated version
     }
 }
 
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'com.bertramlabs.asset-pipeline'
-apply plugin: 'war' // Apply the war plugin
+plugins {
+    id 'org.springframework.boot' version '2.2.13.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'groovy'
+    id 'java'
+    id 'war'
+    id 'org.flywaydb.flyway' version '7.15.0' // Updated version
+}
 
 repositories {
-    maven { url "https://repo.grails.org/grails/core" }
+    mavenLocal()
     mavenCentral()
-    jcenter()
+    maven { url "https://repo.maven.apache.org/maven2" }
     maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://repo.grails.org/grails/plugins" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -52,7 +60,7 @@ dependencies {
     implementation "org.hibernate:hibernate-core:5.4.18.Final"
     implementation "org.grails.plugins:gsp:4.0.3"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-    implementation "org.yaml:snakeyaml:1.26" // Add this line to ensure compatibility
+    implementation "org.yaml:snakeyaml:1.26"
     runtimeOnly "org.glassfish.web:el-impl:2.1.2-b03"
     runtimeOnly "com.h2database:h2:1.4.200"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc:9.0.37"
@@ -80,9 +88,12 @@ tasks.withType(Test) {
     }
 }
 
-assets {
-    minifyJs = true
-    minifyCss = true
+flyway {
+    url = 'jdbc:postgresql://db:5432/postgres'
+    user = 'church_services_user'
+    password = 'church_services_password'
+    schemas = ['public']
+    locations = ['filesystem:src/main/resources/db/migration']
 }
 
 build.mustRunAfter clean
@@ -96,12 +107,17 @@ sourceSets {
             srcDirs = ['grails-app/conf', 'src/main/resources']
         }
     }
+    main {
+        resources {
+            srcDirs += 'grails-app/migrations'
+        }
+    }
 }
 
 springBoot {
-    mainClassName = 'church.services.backend.Application' // Ensure this points to your main class
+    mainClassName = 'church.services.backend.Application'
 }
 
 bootWar {
-    archiveFileName = 'app.war' // Ensure the WAR file is named app.war
+    archiveFileName = 'app.war'
 }

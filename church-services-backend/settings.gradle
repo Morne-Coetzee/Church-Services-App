@@ -1,7 +1,9 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url "https://repo.grails.org/grails/core" }
         jcenter()
+        maven { url "https://repo.grails.org/grails/core" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://repo.grails.org/grails/plugins/org/grails/plugins/database-migration" }
     }
 }

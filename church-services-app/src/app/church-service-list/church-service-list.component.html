@@ -1,1 +1,16 @@
-<p>church-service-list works!</p>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let service of churchServices">
+            <td>{{ service.name }}</td>
+            <td>{{ service.description }}</td>
+            <td>{{ service.date | date }}</td>
+        </tr>
+    </tbody>
+</table>

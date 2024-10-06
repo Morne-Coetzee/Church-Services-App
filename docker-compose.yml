@@ -1,37 +1,46 @@
-version: '3'
+version: '3.8'
 
 services:
-  db:
-    image: postgres:14
-    restart: always
-    environment:
-      POSTGRES_USER: 'church_services_user'
-      POSTGRES_PASSWORD: 'church_services_password'
-      POSTGRES_DB: 'church_services'
-    ports:
-      - "5432:5432"
-    volumes:
-      - church-services-db-data:/var/lib/postgresql/data
-
-  backend:
-    build: ./church-services-backend
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: 'jdbc:postgresql://db:5432/church_services'
-      DATABASE_USERNAME: 'church_services_user'
-      DATABASE_PASSWORD: 'church_services_password'
-
   frontend:
     build: ./church-services-app
-    restart: always
     ports:
       - "4200:4200"
     depends_on:
       - backend
+
+  backend:
+    build: ./church-services-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_USER=church_services_user
+      - DB_PASSWORD=church_services_password
+      - DB_NAME=postgres
+    depends_on:
+      - db
+    entrypoint: >
+      sh -c "
+      ./gradlew flywayMigrate &&
+      java -jar build/libs/app.war
+      "
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: church_services_user
+      POSTGRES_PASSWORD: church_services_password
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - church-services-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   church-services-db-data:

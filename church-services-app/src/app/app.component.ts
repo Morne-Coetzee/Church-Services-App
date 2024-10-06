@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ChurchService } from './services/church-service.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'church-services-app';
+export class AppComponent implements OnInit {
+  title = 'Morne se app';
+  churchServices: any[] = [];
+
+  constructor(private churchService: ChurchService) {}
+
+  ngOnInit() {
+    this.churchService.getChurchServices().subscribe((services: any[]) => {
+      this.churchServices = services;
+    });
+  }
 }

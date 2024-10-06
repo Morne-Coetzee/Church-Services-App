@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ChurchService } from '../services/church-service.service';
 
 @Component({
   selector: 'app-church-service-list',
-  standalone: true,
-  imports: [],
   templateUrl: './church-service-list.component.html',
-  styleUrl: './church-service-list.component.css'
+  styleUrls: ['./church-service-list.component.css']
 })
-export class ChurchServiceListComponent {
+export class ChurchServiceListComponent implements OnInit {
+  churchServices: any[] = [];
 
+  constructor(private churchService: ChurchService) {}
+
+  ngOnInit() {
+    this.churchService.getChurchServices().subscribe((services: any[]) => {
+      this.churchServices = services;
+    });
+  }
 }
