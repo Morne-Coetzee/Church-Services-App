@@ -1,0 +1,13 @@
+<nb-layout>
+    <nb-layout-header fixed>Church Service Detail</nb-layout-header>
+    <nb-layout-column>
+        <nb-card>
+            <nb-card-header>{{ service?.name }}</nb-card-header>
+            <nb-card-body>
+                <p>{{ service?.description }}</p>
+                <p>{{ service?.date }}</p>
+                <p>{{ service?.type }}</p>
+            </nb-card-body>
+        </nb-card>
+    </nb-layout-column>
+</nb-layout>

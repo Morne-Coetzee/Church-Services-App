@@ -1,0 +1,13 @@
+<nb-layout>
+    <nb-layout-header fixed>Church Service Form</nb-layout-header>
+    <nb-layout-column>
+        <nb-card>
+            <nb-card-header>{{ isEditMode ? 'Edit Service' : 'Create Service' }}</nb-card-header>
+            <nb-card-body>
+                <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+
+                </form>
+            </nb-card-body>
+        </nb-card>
+    </nb-layout-column>
+</nb-layout>

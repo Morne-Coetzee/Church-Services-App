@@ -9,7 +9,7 @@ class ChurchServiceService {
     }
 
     List<ChurchService> list(Map args) {
-        ChurchService.list(args)
+        ChurchService.findAll(args)
     }
 
     Long count() {
@@ -22,5 +22,9 @@ class ChurchServiceService {
 
     ChurchService save(ChurchService churchService) {
         churchService.save(flush: true)
+    }
+
+    List<ChurchService> getAllChurchServices() {
+        ChurchService.findAll()
     }
 }

@@ -13,13 +13,10 @@ grails:
     cors:
         enabled: true
         mappings:
-            '/**':
-                allowedOrigins: ['http://localhost:4200']
-                allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-                allowedHeaders: ['*']
-                exposedHeaders: ['*']
-                allowCredentials: true
-                maxAge: 3600
+            - path: /**
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
 
 spring:
     groovy:

@@ -1,29 +1,55 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { ChurchService } from '../models/church-service.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ChurchService {
-    private apiUrl = `${environment.apiUrl}/church-services`;
+export class ChurchServiceService {
+    private apiUrl = 'http://localhost:8080/api/church-services';
 
     constructor(private http: HttpClient) { }
 
-    getChurchServices(): Observable<any> {
-        return this.http.get(this.apiUrl);
+    getAllChurchServices(): Observable<ChurchService[]> {
+        return this.http.get<ChurchService[]>(this.apiUrl, { headers: { 'Accept': 'application/json' } }).pipe(
+            catchError(this.handleError)
+        );
     }
 
-    createChurchService(service: any): Observable<any> {
-        return this.http.post(this.apiUrl, service);
+    getChurchServiceById(id: number): Observable<ChurchService> {
+        return this.http.get<ChurchService>(`${this.apiUrl}/${id}`, { headers: { 'Accept': 'application/json' } }).pipe(
+            catchError(this.handleError)
+        );
     }
 
-    updateChurchService(id: number, service: any): Observable<any> {
-        return this.http.put(`${this.apiUrl}/${id}`, service);
+    createChurchService(service: ChurchService): Observable<ChurchService> {
+        return this.http.post<ChurchService>(this.apiUrl, service, { headers: { 'Accept': 'application/json' } }).pipe(
+            catchError(this.handleError)
+        );
     }
 
-    deleteChurchService(id: number): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/${id}`);
+    updateChurchService(id: number, service: ChurchService): Observable<ChurchService> {
+        return this.http.put<ChurchService>(`${this.apiUrl}/${id}`, service, { headers: { 'Accept': 'application/json' } }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    deleteChurchService(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: { 'Accept': 'application/json' } }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    getAll(): Observable<ChurchService[]> {
+        return this.http.get<ChurchService[]>(this.apiUrl).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        console.error('An error occurred:', error.message);
+        return throwError('Something went wrong; please try again later.');
     }
 }

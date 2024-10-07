@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChurchServiceListComponent } from './church-service-list/church-service-list.component';
-import { ChurchServiceCreateComponent } from './church-service-create/church-service-create.component';
-import { ChurchServiceUpdateComponent } from './church-service-update/church-service-update.component';
-import { ChurchServiceDeleteComponent } from './church-service-delete/church-service-delete.component';
+import { ChurchServiceListComponent } from './components/church-service-list/church-service-list.component';
+import { ChurchServiceFormComponent } from './components/church-service-form/church-service-form.component';
+import { ChurchServiceDetailComponent } from './components/church-service-detail/church-service-detail.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/services', pathMatch: 'full' },
     { path: 'services', component: ChurchServiceListComponent },
-    { path: 'create', component: ChurchServiceCreateComponent },
-    { path: 'update', component: ChurchServiceUpdateComponent },
-    { path: 'delete', component: ChurchServiceDeleteComponent },
+    { path: 'services/create', component: ChurchServiceFormComponent },
+    { path: 'services/:id', component: ChurchServiceDetailComponent },
 ];
 
 @NgModule({

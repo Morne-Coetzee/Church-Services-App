@@ -1,0 +1,24 @@
+<nb-layout>
+    <nb-layout-header fixed>Church Services</nb-layout-header>
+    <nb-layout-column>
+        <nb-card>
+            <nb-card-header>
+                <button nbButton status="success" routerLink="/create">Create New Service</button>
+            </nb-card-header>
+            <nb-card-body>
+                <div *ngFor="let service of churchServices">
+                    <nb-card>
+                        <nb-card-header>{{ service?.name }}</nb-card-header>
+                        <nb-card-body>
+                            <p>{{ service?.description }}</p>
+                            <p>{{ service?.date }}</p>
+                            <p>{{ service?.type }}</p>
+                            <button nbButton status="primary" (click)="editService(service?.id)">Edit</button>
+                            <button nbButton status="danger" (click)="deleteService(service?.id)">Delete</button>
+                        </nb-card-body>
+                    </nb-card>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </nb-layout-column>
+</nb-layout>

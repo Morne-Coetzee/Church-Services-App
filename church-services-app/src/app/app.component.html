@@ -1,8 +1,15 @@
-<div>
-  <h1>{{ title }}</h1>
-  <ul>
-    <li *ngFor="let service of churchServices">
-      {{ service.name }} - {{ service.date }} - {{ service.type }}
-    </li>
-  </ul>
-</div>
+<nb-layout>
+  <nb-layout-header fixed>
+    <nb-actions>
+      <nb-action>
+        <nb-icon icon="menu-outline"></nb-icon>
+      </nb-action>
+      <nb-action>
+        <span>Church Services App</span>
+      </nb-action>
+    </nb-actions>
+  </nb-layout-header>
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+</nb-layout>

@@ -1,9 +1,9 @@
 export interface ChurchService {
-    id: number;
+    id?: number;
     name: string;
-    type: ChurchServiceType;
-    date: string;
     description: string;
+    date: string;
+    type: string;
 }
 
 export interface ChurchServiceType {

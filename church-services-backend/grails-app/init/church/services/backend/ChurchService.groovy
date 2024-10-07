@@ -1,9 +1,9 @@
 package church.services.backend
 
-import grails.gorm.transactions.Transactional
+import church.services.backend.ChurchServiceType
 
-@Transactional
 class ChurchService {
+    Long id
     String name
     String description
     Date date
@@ -17,6 +17,10 @@ class ChurchService {
     }
 
     static mapping = {
-        table 'church_service'
+        id column: 'id'
+        name column: 'name'
+        description column: 'description'
+        date column: 'date'
+        type column: 'type_id'
     }
 }
