@@ -55,7 +55,7 @@ docker run -p 4200:4200 -p 8080:8080 church-services-app
 ### Frontend
 
 1. Clone the repository:
-git clone https://github.com/your-username/church-services-app.git
+git clone https://github.com/Morne-Coetzee/Church-Services-App.git
 cd church-services-app
 
 2. Navigate to the frontend directory:
