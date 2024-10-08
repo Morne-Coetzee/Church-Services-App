@@ -2,7 +2,7 @@
 
 This project is a web application for managing church services. It allows users to create, view, edit, and delete church services. The frontend is built with Angular and Nebular, while the backend is powered by Grails.
 
-## Please note that I am still in development and bit of a bit more than I can chew :)
+## Please note that I am still in development and quite a few of the methods is not working presently
 
 ## Features
 
