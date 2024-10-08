@@ -1,44 +1,44 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChurchServiceService } from '../../services/church-service.service';
-import { ChurchService } from '../../models/church-service.model';
 
 @Component({
   selector: 'app-church-service-list',
   templateUrl: './church-service-list.component.html',
-  styleUrls: ['./church-service-list.component.css']
+  styleUrls: ['./church-service-list.component.scss']
 })
 export class ChurchServiceListComponent implements OnInit {
-  churchServices: ChurchService[] = [];
+  services: any[] = [];
 
-  constructor(private churchService: ChurchServiceService) { }
+  constructor(private churchService: ChurchServiceService, private router: Router) { }
 
   ngOnInit(): void {
-    this.churchService.getAllChurchServices().subscribe(
-      (services: ChurchService[]) => {
-        this.churchServices = services;
+    this.churchService.getAllServices().subscribe(
+      (services: any[]) => {
+        this.services = services;
       },
-      (error) => {
-        console.error('Error fetching church services:', error);
+      (error: any) => {
+        console.error('Error fetching services', error);
       }
     );
   }
 
-  editService(id: number | undefined): void {
-    if (id !== undefined) {
-      // Navigate to edit form
-    }
+  deleteService(id: number): void {
+    this.churchService.deleteService(id).subscribe(
+      () => {
+        this.services = this.services.filter(service => service.id !== id);
+      },
+      (error: any) => {
+        console.error('Error deleting service', error);
+      }
+    );
   }
 
-  deleteService(id: number | undefined): void {
-    if (id !== undefined) {
-      this.churchService.deleteChurchService(id).subscribe(
-        () => {
-          this.churchServices = this.churchServices.filter(service => service.id !== id);
-        },
-        (error) => {
-          console.error('Error deleting church service:', error);
-        }
-      );
-    }
+  editService(id: number): void {
+    this.router.navigate(['/services', id, 'edit']);
+  }
+
+  createService(): void {
+    this.router.navigate(['/services/create']);
   }
 }

@@ -6,7 +6,7 @@ import { ChurchService } from '../../models/church-service.model';
 @Component({
   selector: 'app-church-service-detail',
   templateUrl: './church-service-detail.component.html',
-  styleUrls: ['./church-service-detail.component.css']
+  styleUrls: ['./church-service-detail.component.scss']
 })
 export class ChurchServiceDetailComponent implements OnInit {
   service: ChurchService | undefined;
@@ -17,14 +17,16 @@ export class ChurchServiceDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.churchService.getChurchServiceById(id).subscribe(
-      (service: ChurchService) => {
-        this.service = service;
-      },
-      (error) => {
-        console.error('Error fetching church service:', error);
-      }
-    );
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.churchService.getServiceById(Number(id)).subscribe(
+        (service: ChurchService) => {
+          this.service = service;
+        },
+        (error: any) => {
+          console.error('Error fetching service', error);
+        }
+      );
+    }
   }
 }

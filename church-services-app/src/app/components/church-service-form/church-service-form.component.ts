@@ -7,10 +7,11 @@ import { ChurchService } from '../../models/church-service.model';
 @Component({
   selector: 'app-church-service-form',
   templateUrl: './church-service-form.component.html',
-  styleUrls: ['./church-service-form.component.css']
+  styleUrls: ['./church-service-form.component.scss']
 })
 export class ChurchServiceFormComponent implements OnInit {
-  serviceForm: FormGroup;
+  serviceForm!: FormGroup;
+  serviceId: number | null = null;
   isEditMode: boolean = false;
 
   constructor(
@@ -18,25 +19,26 @@ export class ChurchServiceFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private churchService: ChurchServiceService
-  ) {
-    this.serviceForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      date: ['', Validators.required],
-      type: ['', Validators.required],
-    });
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.serviceForm = this.fb.group({
+      name: ['', Validators.required],
+      date: ['', Validators.required],
+      time: ['', Validators.required],
+      location: ['', Validators.required]
+    });
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.serviceId = Number(id);
       this.isEditMode = true;
-      this.churchService.getChurchServiceById(Number(id)).subscribe(
+      this.churchService.getServiceById(this.serviceId).subscribe(
         (service: ChurchService) => {
           this.serviceForm.patchValue(service);
         },
-        (error) => {
-          console.error('Error fetching church service:', error);
+        (error: any) => {
+          console.error('Error fetching service', error);
         }
       );
     }
@@ -44,23 +46,22 @@ export class ChurchServiceFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.serviceForm.valid) {
-      if (this.isEditMode) {
-        const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.churchService.updateChurchService(id, this.serviceForm.value).subscribe(
+      if (this.serviceId !== null) {
+        this.churchService.updateService(this.serviceId, this.serviceForm.value).subscribe(
           () => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/services']);
           },
-          (error) => {
-            console.error('Error updating church service:', error);
+          (error: any) => {
+            console.error('Error updating service', error);
           }
         );
       } else {
-        this.churchService.createChurchService(this.serviceForm.value).subscribe(
+        this.churchService.createService(this.serviceForm.value).subscribe(
           () => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/services']);
           },
-          (error) => {
-            console.error('Error creating church service:', error);
+          (error: any) => {
+            console.error('Error creating service', error);
           }
         );
       }

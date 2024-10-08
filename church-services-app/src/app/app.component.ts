@@ -1,33 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { NbMenuItem } from '@nebular/theme';
-import { ChurchServiceService } from './services/church-service.service'; // Corrected path
+import { ChurchServiceService } from './services/church-service.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Morne se app';
-  churchServices: any[] = [];
-  menuItems: NbMenuItem[] = [
-    {
-      title: 'Services',
-      link: '/services',
-      icon: 'home-outline',
-    },
-    {
-      title: 'Create Service',
-      link: '/services/create',
-      icon: 'plus-outline',
-    },
-  ];
+  services: any[] = [];
 
-  constructor(private churchService: ChurchServiceService) {}
+  constructor(private churchService: ChurchServiceService) { }
 
-  ngOnInit() {
-    this.churchService.getAll().subscribe((services: any[]) => {
-      this.churchServices = services;
-    });
+  ngOnInit(): void {
+    this.churchService.getAllServices().subscribe(
+      (services: any[]) => {
+        this.services = services;
+      },
+      (error: any) => {
+        console.error('Error fetching services', error);
+      }
+    );
   }
 }
